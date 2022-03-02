@@ -2,10 +2,20 @@
 
 <PageTitle>Privas</PageTitle>
 
-<div class="page">
+<div id="container">
     <main>
         <article>
             @Body
         </article>
     </main>
+
+    <footer>
+        <b>Copyright © Privas. All Rights Reserved</b>
+        <p>Version DEV-0001 | @Date</p>
+        <a href="https://paczkowskiprogramming.pl">Author: Kamil Paczkowski</a>
+    </footer>
 </div>
+
+@code {
+    int Date = DateTime.Now.Year;
+}
