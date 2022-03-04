@@ -1,12 +1,16 @@
 article {
-    height: 97vh;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 footer {
+    color: black;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0.5%;
-    height: 10vh;
+    height: 5vh;
     background-color: white;
 }
