@@ -61,4 +61,19 @@ input[type="text"] {
 
 #username_form button {
     font-size: 3vh;
+    border: none;
+    color: white;
+    background-color: #f15025;
+    border: 1px solid #f15025;
+    border-radius: 2px;
+    padding: 2px 15px;
+    transition: all 0.3s cubic-bezier(0.1, 0.9, 0.2, 1);
+    outline: none;
+    transition: 0.35s;
+}
+
+#username_form button:hover {
+    padding: 3px 17px;
+    transition: 0.35s;
+    cursor: pointer;
 }
