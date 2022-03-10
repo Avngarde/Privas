@@ -1,4 +1,5 @@
 ﻿@page "/"
+@inject ProtectedSessionStorage ProtectedSessionStore
 
 <PageTitle>Index</PageTitle>
 
@@ -10,8 +11,9 @@
     <div id="second_half">
        <div id="second_half_content">
            <div id="username_form">
-               <input type="text" placeholder="Username" />
-               <button>Set username</button>
+               <input type="text" placeholder="Username" value="@username"
+                    @oninput = "((ChangeEventArgs e) => username = e?.Value?.ToString())"  />
+               <button @onclick="SetUsername">Set username</button>
            </div>
            <span>And then</span>
            <div id="index_options_holder">
@@ -22,3 +24,13 @@
        </div> 
     </div>
 </div>
+
+@code {
+    private string? username;
+
+    private async Task SetUsername()
+    {
+        if (username != null)
+            await ProtectedSessionStore.SetAsync("privas_currentUserName", username);
+    }
+}
