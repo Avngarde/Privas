@@ -5,9 +5,8 @@ namespace Privas.Interface
 {
     public interface IConnector
     {
-        private MongoClient Client => new("MongoDBPasses");
-        IMongoDatabase Database => Client.GetDatabase("Privas");
-        IMongoCollection<BsonDocument> Collection { get; set; }
+        private static MongoClient Client => new("MongoDBPasses");
+        static IMongoDatabase Database => Client.GetDatabase("Privas");
         BsonDocument GetAll();
         BsonDocument Get();
         void Add();
