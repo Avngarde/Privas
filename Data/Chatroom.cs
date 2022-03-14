@@ -1,6 +1,9 @@
-public class Chatroom
+namespace Privas.Data
 {
-    public string UniqueCode { get; set; }
-    public string AccessPassword { get; set; }
-    
+    public class Chatroom
+    {
+        public string UniqueCode { get; set; }
+        public string AccessPassword { get; set; }
+        
+    }
 }
