@@ -7,30 +7,34 @@ namespace Privas.Connectors
     public class ChatroomConnector : IConnector
     {
         public IMongoCollection<BsonDocument> Collection = IConnector.Database.GetCollection<BsonDocument>("chatrooms");
-     
-        public void Add()
+
+        public async Task Add(BsonDocument newChatroom)
         {
-            throw new NotImplementedException();
+            await Collection.InsertOneAsync(newChatroom);
         }
 
-        public DeleteResult Delete()
+        public DeleteResult Delete(string uniqueCode)
         {
-            throw new NotImplementedException();
+            var filter = Builders<BsonDocument>.Filter.Eq("uniqueCode", uniqueCode);
+            return Collection.DeleteOne(filter);
+
         }
 
-        public BsonDocument Get()
+        public BsonDocument Get(string uniqueCode)
         {
-            throw new NotImplementedException();
+            var filter = Builders<BsonDocument>.Filter.Eq("uniqueCode", uniqueCode);
+            return Collection.Find(filter).FirstOrDefault();
         }
 
-        public BsonDocument GetAll()
+        public List<MongoDB.Bson.BsonDocument> GetAll()
         {
-            throw new NotImplementedException();
+            return Collection.Find(new BsonDocument()).ToList();
         }
 
-        public UpdateResult Update()
+        public ReplaceOneResult Update(string uniqueCode, BsonDocument chatroom)
         {
-            throw new NotImplementedException();
+            var filter = Builders<BsonDocument>.Filter.Eq("uniqueCode", uniqueCode);
+            return Collection.ReplaceOne(filter, chatroom);
         }
     }
 }
