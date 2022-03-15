@@ -1,5 +1,6 @@
 ﻿@page "/"
 @inject ProtectedSessionStorage ProtectedSessionStore
+@inject NavigationManager NavManager
 
 <PageTitle>Index</PageTitle>
 
@@ -17,7 +18,7 @@
            </div>
            <span>And then</span>
            <div id="index_options_holder">
-               <a href="">Browse roomchats</a>
+               <a href="" @onclick="GoToChatrooms">Browse roomchats</a>
                <span>Or</span>
                <a href="">Create a roomchat</a>
            </div>
@@ -32,5 +33,14 @@
     {
         if (username != null)
             await ProtectedSessionStore.SetAsync("privas_currentUserName", username);
+    }
+
+    private async Task GoToChatrooms() 
+    {
+        var username = await ProtectedSessionStore.GetAsync<string>("privas_currentUserName");
+        if (username.Value != null) 
+        {
+            NavManager.NavigateTo("/chatrooms");
+        }
     }
 }
