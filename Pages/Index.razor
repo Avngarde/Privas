@@ -21,7 +21,7 @@
            <div id="index_options_holder">
                <a href="" @onclick="GoToChatrooms">Browse roomchats</a>
                <span>Or</span>
-               <a href="">Create a roomchat</a>
+               <a href="" @onclick="GoToAddChatroom">Create a roomchat</a>
            </div>
        </div> 
     </div>
@@ -47,5 +47,15 @@
         {
             NavManager.NavigateTo("/chatrooms");
         }
+    }
+
+    private async Task GoToAddChatroom()
+    {
+        var username = await ProtectedSessionStore.GetAsync<string>("privas_currentUserName");
+        var userCode = await ProtectedSessionStore.GetAsync<string>("privas_currentUserCode");
+        if (username.Value != null && userCode.Value != null) 
+        {
+            NavManager.NavigateTo("/addchatroom");
+        }   
     }
 }
