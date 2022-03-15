@@ -1,0 +1,18 @@
+@page "/chatrooms"
+@inject ProtectedSessionStorage ProtectedSessionStore
+
+<PageTitle>Index</PageTitle>
+
+<div id="chatrooms_container">
+    Hello Chatrooms
+</div>
+
+@code {
+    private string? username;
+
+    private async Task SetUsername()
+    {
+        if (username != null)
+            await ProtectedSessionStore.SetAsync("privas_currentUserName", username);
+    }
+}
