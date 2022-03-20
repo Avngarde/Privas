@@ -7,10 +7,10 @@ namespace Privas.Interface
     {
         private static MongoClient Client => new("MongoDBPasses");
         static IMongoDatabase Database => Client.GetDatabase("Privas");
-        List<MongoDB.Bson.BsonDocument> GetAll();
-        BsonDocument Get(string id);
+        Task<List<MongoDB.Bson.BsonDocument>> GetAll();
+        Task<BsonDocument> Get(string id);
         Task Add(BsonDocument document);
-        ReplaceOneResult Update(string uniqueCode, BsonDocument chatroom);
-        DeleteResult Delete(string id);
+        Task<ReplaceOneResult> Update(string uniqueCode, BsonDocument chatroom);
+        Task<DeleteResult> Delete(string id);
     }
 }
