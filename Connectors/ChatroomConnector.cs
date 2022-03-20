@@ -13,28 +13,29 @@ namespace Privas.Connectors
             await Collection.InsertOneAsync(newChatroom);
         }
 
-        public DeleteResult Delete(string uniqueCode)
+        public async Task<DeleteResult> Delete(string uniqueCode)
         {
             var filter = Builders<BsonDocument>.Filter.Eq("uniqueCode", uniqueCode);
-            return Collection.DeleteOne(filter);
+            return await Collection.DeleteOneAsync(filter);
 
         }
 
-        public BsonDocument Get(string uniqueCode)
+        public async Task<BsonDocument> Get(string uniqueCode)
         {
             var filter = Builders<BsonDocument>.Filter.Eq("uniqueCode", uniqueCode);
-            return Collection.Find(filter).FirstOrDefault();
+            var searchResult = await Collection.FindAsync(filter);
+            return await searchResult.FirstOrDefaultAsync();
         }
 
-        public List<MongoDB.Bson.BsonDocument> GetAll()
+        public async Task<List<MongoDB.Bson.BsonDocument>> GetAll()
         {
-            return Collection.Find(new BsonDocument()).ToList();
+            return await Collection.Find(new BsonDocument()).ToListAsync();
         }
 
-        public ReplaceOneResult Update(string uniqueCode, BsonDocument chatroom)
+        public async Task<ReplaceOneResult> Update(string uniqueCode, BsonDocument chatroom)
         {
             var filter = Builders<BsonDocument>.Filter.Eq("uniqueCode", uniqueCode);
-            return Collection.ReplaceOne(filter, chatroom);
+            return await Collection.ReplaceOneAsync(filter, chatroom);
         }
     }
 }
