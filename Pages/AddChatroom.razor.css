@@ -47,7 +47,7 @@ input[type="text"] {
     transition: 0.35s;
 }
 
-input[type="submit"]:hover {
+#add_chatroom_submit:hover {
     padding: 3px 17px;
     transition: 0.35s;
     cursor: pointer;
