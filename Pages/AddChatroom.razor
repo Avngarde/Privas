@@ -1,12 +1,13 @@
 @page "/addchatroom"
+@using MongoDB.Bson;
 
 <PageTitle>AddChatroom</PageTitle>
 
 <div id="add_chatroom_container">
-    <form>
+    <div id="form_holder">
         <h1>Add Chatroom</h1>
         <input type="text" placeholder="Chatroom name" />
         <input type="text" placeholder="Access password" />
-        <input type="submit" value="Create Chatroom" />
-    </form>
+        <button id="add_chatroom_submit">Add!</button>
+    </div>
 </div>
