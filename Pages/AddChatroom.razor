@@ -1,13 +1,41 @@
 @page "/addchatroom"
 @using MongoDB.Bson;
+@using Privas.Data;
+@using Privas.SupportClasses;
+@using Privas.Connectors;
 
 <PageTitle>AddChatroom</PageTitle>
 
 <div id="add_chatroom_container">
     <div id="form_holder">
         <h1>Add Chatroom</h1>
-        <input type="text" placeholder="Chatroom name" />
-        <input type="text" placeholder="Access password" />
-        <button id="add_chatroom_submit">Add!</button>
+        <input type="text" value="@name" placeholder="Chatroom name" 
+            @oninput = "((ChangeEventArgs e) => name = e?.Value?.ToString())" 
+        />
+        <input type="text" value="@password" placeholder="Access password" 
+            @oninput = "((ChangeEventArgs e) => password = e?.Value?.ToString())" 
+        />
+        <button id="add_chatroom_submit" @onclick="CreateChatroom">Add!</button>
     </div>
 </div>
+
+@code {
+    private string? name;
+    private string? password;
+
+    private async Task CreateChatroom()
+    {
+        if (name != null && password != null) 
+        {
+            Chatroom newChatroom = new()
+            {
+                Name = name,
+                AccessPassword = password,
+                UniqueCode = UniqueCodeGenerator.Generate()
+            };
+
+            ChatroomConnector connector = new();
+            await connector.Add(newChatroom.ToBsonDocument());
+        }
+    }
+}
