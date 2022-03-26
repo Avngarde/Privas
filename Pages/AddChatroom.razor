@@ -3,6 +3,7 @@
 @using Privas.Data;
 @using Privas.SupportClasses;
 @using Privas.Connectors;
+@inject IToastService toastService;
 
 <PageTitle>AddChatroom</PageTitle>
 
@@ -27,15 +28,25 @@
     {
         if (name != null && password != null) 
         {
-            Chatroom newChatroom = new()
+            toastService.ShowInfo("", "Loading");
+            try 
             {
-                Name = name,
-                AccessPassword = password,
-                UniqueCode = UniqueCodeGenerator.Generate()
-            };
+                Chatroom newChatroom = new()
+                {
+                    Name = name,
+                    AccessPassword = password,
+                    UniqueCode = UniqueCodeGenerator.Generate()
+                };
 
-            ChatroomConnector connector = new();
-            await connector.Add(newChatroom.ToBsonDocument());
+                ChatroomConnector connector = new();
+                await connector.Add(newChatroom.ToBsonDocument());
+                toastService.ClearInfoToasts();
+                toastService.ShowSuccess("", "Created Chatroom");
+            }
+            catch (Exception)
+            {
+                toastService.ShowError("", "Failed to add chatroom");
+            }
         }
     }
 }
