@@ -37,6 +37,7 @@
         {
             await ProtectedSessionStore.SetAsync("privas_currentUserName", username);
             await ProtectedSessionStore.SetAsync("privas_currentUserCode", UserCodeGenerator.Generate());
+            toastService.ShowSuccess("", "Username set");
         }
     }
 
