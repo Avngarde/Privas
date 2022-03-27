@@ -1,18 +1,34 @@
 @page "/chatrooms"
 @inject ProtectedSessionStorage ProtectedSessionStore
+@using Privas.Connectors
 
 <PageTitle>Index</PageTitle>
 
 <div id="chatrooms_container">
-    Hello Chatrooms
+@foreach (var chatroom in chatrooms)
+{
+    <p>@chatroom["Name"]</p>  
+}
 </div>
 
 @code {
     private string? username;
+    private ChatroomConnector chatroomConnector = new();
+    private List<MongoDB.Bson.BsonDocument> chatrooms = new();
 
     private async Task SetUsername()
     {
         if (username != null)
             await ProtectedSessionStore.SetAsync("privas_currentUserName", username);
     }
+
+    protected async override Task OnInitializedAsync()
+    {
+        chatrooms = await chatroomConnector.GetAll();
+        StateHasChanged();
+    }
 }
+
+
+
+
