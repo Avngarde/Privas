@@ -6,3 +6,40 @@
     align-items: center;
     color: black;
 }
+
+#chatrooms_list {
+    background-color: white;
+    width: 60%;
+    height: 85vh;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.chatroom {
+    margin: 1.5%;
+    padding: 0.3% 1% 0.3% 1%;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Poppins', sans-serif;
+    align-items: center;
+    width: 90%;
+    height: 4vh;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    background-color: rgb(240, 240, 240);
+    border-radius: 25px;
+}
+
+.chatroom_join_button {
+    font-size: 2vh;
+    border: none;
+    color: white;
+    background-color: rgb(25, 25, 25);
+    border: 1px solid rgb(25, 25, 25);
+    font-weight: bold;
+    border-radius: 0.5rem;
+    padding: 0.2% 1% 0.2% 1%;
+    outline: none;
+}
