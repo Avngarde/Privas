@@ -1,45 +1,48 @@
 #chatrooms_container {
     width: 100%;
     height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     color: black;
+    background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 #chatrooms_list {
-    background-color: white;
-    width: 60%;
-    height: 85vh;
-    border-radius: 5px;
+    width: 100%;
+    height: 100vh;
+    border-radius: 0.5rem;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     display: flex;
-    align-items: center;
-    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: flex-start;
 }
 
 .chatroom {
     margin: 1.5%;
-    padding: 0.3% 1% 0.3% 1%;
     display: flex;
+    flex: 1 1 30%;
+    flex-direction: column;
+    padding-top: 1%;
     justify-content: space-between;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Varela Round', sans-serif;
     align-items: center;
-    width: 90%;
-    height: 4vh;
+    font-size: 2.5vh;
+    width: 10%;
+    height: 10vh;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    background-color: rgb(240, 240, 240);
-    border-radius: 25px;
+    border-radius: 0.5rem;
+    flex-grow: 0;
+    background-color: white;
 }
 
 .chatroom_join_button {
+    width: 100%;
     font-size: 2vh;
     border: none;
     color: white;
     background-color: rgb(25, 25, 25);
     border: 1px solid rgb(25, 25, 25);
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
     font-weight: bold;
-    border-radius: 0.5rem;
-    padding: 0.2% 1% 0.2% 1%;
     outline: none;
+    font-family: 'Varela Round', sans-serif;
 }
