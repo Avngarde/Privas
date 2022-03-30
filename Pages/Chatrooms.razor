@@ -16,13 +16,35 @@
         }
     </div>
     <div id="search_holder">
-        <input type="text" id="chatroom_search_input" placeholder="Search..." />
+        <input type="text" id="chatroom_search_input" placeholder="Search..." 
+            @oninput = "((ChangeEventArgs e) => search = e?.Value?.ToString())"
+            @onkeypress = "SearchChatroom"    />
     </div>
 </div>
 
 @code {
     private ChatroomConnector chatroomConnector = new();
     private List<MongoDB.Bson.BsonDocument> chatrooms = new();
+    private List<MongoDB.Bson.BsonDocument>? chatroomsTemp;
+    private string? search;
+
+    private void SearchChatroom(KeyboardEventArgs args)
+    {
+        if (search == null || search == "")
+        {
+            if (chatroomsTemp != null) chatrooms = chatroomsTemp;
+        }
+
+        if (args.Code == "Enter")
+        {
+            chatroomsTemp = chatrooms;
+            search = search?.ToLower();
+            chatrooms = chatrooms.FindAll(chatroom => chatroom["Name"]
+            .ToString()
+            .ToLower()
+            .Contains(search));
+        }
+    }
 
     protected async override Task OnInitializedAsync()
     {
