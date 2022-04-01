@@ -19,8 +19,7 @@
     </div>
     <div id="search_holder">
         <input type="text" id="chatroom_search_input" placeholder="Search..." 
-            @oninput = "((ChangeEventArgs e) => search = e?.Value?.ToString())"
-            @onkeypress = "SearchChatroom"    />
+            @oninput = "SearchChatroom"  />
     </div>
 </div>
 
@@ -30,17 +29,17 @@
     private List<MongoDB.Bson.BsonDocument> chatroomsAll = new();
     private string? search;
 
-    private void SearchChatroom(KeyboardEventArgs args)
+    private void SearchChatroom(ChangeEventArgs e)
     {
+        search = e.Value?.ToString();
         if (search == null || search == "") chatrooms = chatroomsAll;
-
-        if (args.Code == "Enter")
+        else 
         {
             search = search?.ToLower();
             chatrooms = chatrooms.FindAll(chatroom => chatroom["Name"]
-            .ToString()
-            .ToLower()
-            .Contains(search));
+                .ToString()
+                .ToLower()
+                .Contains(search));
         }
     }
 
