@@ -1,0 +1,19 @@
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
+<header>
+    <span>Username: @userName</span>
+    <span>User code: @userCode</span>
+    <button>End session</button>
+</header>
+
+@code {
+    private string? userName;
+    private string? userCode;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        userName = await localStorage.GetItemAsync<string>("privas_currentUserName");
+        userCode = await localStorage.GetItemAsync<string>("privas_currentUserCode");
+        StateHasChanged();
+    }
+}

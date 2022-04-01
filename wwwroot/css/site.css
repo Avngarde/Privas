@@ -9,3 +9,29 @@ a {
     text-decoration: none;
     color: black;
 }
+
+header {
+    width: 96%;
+    height: 8vh;
+    color: black;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 2%;
+    padding-right: 2%;
+    align-items: center;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    position: fixed;
+    top: 0;
+}
+
+header button {
+    font-size: 2.5vh;
+    border: none;
+    color: white;
+    background-color: #f15025;
+    border: 1px solid #f15025;
+    border-radius: 0.25rem;
+    padding: 0.25rem 1rem 0.25rem 1rem;
+    font-weight: 700;
+}
