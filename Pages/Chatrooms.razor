@@ -1,9 +1,11 @@
 @page "/chatrooms"
 @inject ProtectedSessionStorage ProtectedSessionStore
 @using Privas.Connectors
+@inject NavigationManager NavManager
 
 <PageTitle>Chatrooms</PageTitle>
 
+<Header />
 <div id="chatrooms_container">
     <div id="chatrooms_list">
         @foreach (var chatroom in chatrooms) 
