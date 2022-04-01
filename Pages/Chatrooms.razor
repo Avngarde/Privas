@@ -25,19 +25,15 @@
 @code {
     private ChatroomConnector chatroomConnector = new();
     private List<MongoDB.Bson.BsonDocument> chatrooms = new();
-    private List<MongoDB.Bson.BsonDocument>? chatroomsTemp;
+    private List<MongoDB.Bson.BsonDocument> chatroomsAll = new();
     private string? search;
 
     private void SearchChatroom(KeyboardEventArgs args)
     {
-        if (search == null || search == "")
-        {
-            if (chatroomsTemp != null) chatrooms = chatroomsTemp;
-        }
+        if (search == null || search == "") chatrooms = chatroomsAll;
 
         if (args.Code == "Enter")
         {
-            chatroomsTemp = chatrooms;
             search = search?.ToLower();
             chatrooms = chatrooms.FindAll(chatroom => chatroom["Name"]
             .ToString()
@@ -50,6 +46,7 @@
     {
         chatrooms = await chatroomConnector.GetAll();
         chatrooms = chatrooms.OrderBy(x => x["Name"]).ToList();
+        chatroomsAll = chatrooms;
         StateHasChanged();
     }
 }
