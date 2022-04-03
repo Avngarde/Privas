@@ -1,4 +1,4 @@
-@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject ProtectedLocalStorage localStorage;
 
 <header>
     <span>Username: @userName</span>
@@ -12,8 +12,10 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        userName = await localStorage.GetItemAsync<string>("privas_currentUserName");
-        userCode = await localStorage.GetItemAsync<string>("privas_currentUserCode");
+        var currentUserName = await localStorage.GetAsync<string>("privas_currentUserName");
+        var currentUserCode = await localStorage.GetAsync<string>("privas_currentUserCode");
+        userName = currentUserName.Value;
+        userCode = currentUserCode.Value;
         StateHasChanged();
     }
 }
