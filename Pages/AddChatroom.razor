@@ -4,7 +4,7 @@
 @using Privas.SupportClasses;
 @using Privas.Connectors;
 @inject IToastService toastService;
-@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject ProtectedLocalStorage localStorage;
 
 <PageTitle>AddChatroom</PageTitle>
 
@@ -33,13 +33,15 @@
             toastService.ShowInfo("", "Loading");
             try 
             {
+                var userName = await localStorage.GetAsync<string>("privas_currentUserName");
+                var userCode = await localStorage.GetAsync<string>("privas_currentUserCode");
                 Chatroom newChatroom = new()
                 {
                     Name = name,
                     AccessPassword = password,
                     UniqueCode = UniqueCodeGenerator.Generate(),
-                    OwnerUsername = await localStorage.GetItemAsync<string>("privas_currentUserName"),
-                    OwnerCode = await localStorage.GetItemAsync<string>("privas_currentUserCode")
+                    OwnerUsername = userName.Value,
+                    OwnerCode = userCode.Value
                 };
 
                 ChatroomConnector connector = new();
