@@ -1,6 +1,5 @@
 ﻿@page "/"
-@inject Blazored.LocalStorage.ILocalStorageService localStorage
-@inject ProtectedSessionStorage ProtectedSessionStore
+@inject ProtectedLocalStorage localStorage
 @inject NavigationManager NavManager
 @using Privas.SupportClasses
 @inject IToastService toastService
@@ -36,17 +35,17 @@
     {
         if (username != null) 
         {
-            await localStorage.SetItemAsync("privas_currentUserName", username);
-            await localStorage.SetItemAsync("privas_currentUserCode", UserCodeGenerator.Generate());
+            await localStorage.SetAsync("privas_currentUserName", username);
+            await localStorage.SetAsync("privas_currentUserCode", UserCodeGenerator.Generate());
             toastService.ShowSuccess("", "Username set");
         }
     }
 
     private async Task GoToChatrooms() 
     {
-        var username = await localStorage.GetItemAsync<string>("privas_currentUserName");
-        var userCode = await localStorage.GetItemAsync<string>("privas_currentUserCode");
-        if (username != null && userCode != null) 
+        var username = await localStorage.GetAsync<string>("privas_currentUserName");
+        var userCode = await localStorage.GetAsync<string>("privas_currentUserCode");
+        if (username.Value != null && userCode.Value != null) 
         {
             NavManager.NavigateTo("/chatrooms");
         }
@@ -54,9 +53,9 @@
 
     private async Task GoToAddChatroom()
     {
-        var username = await localStorage.GetItemAsync<string>("privas_currentUserName");
-        var userCode = await localStorage.GetItemAsync<string>("privas_currentUserCode");
-        if (username != null && userCode != null) 
+        var username = await localStorage.GetAsync<string>("privas_currentUserName");
+        var userCode = await localStorage.GetAsync<string>("privas_currentUserCode");
+        if (username.Value != null && userCode.Value != null) 
         {
             NavManager.NavigateTo("/addchatroom");
         }   
