@@ -15,7 +15,7 @@ namespace Privas.Connectors
 
         public async Task<DeleteResult> Delete(string userId)
         {
-            var filter = Builders<BsonDocument>.Filter.Eq("userId", userId);
+            var filter = Builders<BsonDocument>.Filter.Eq("UserId", userId);
             return await Collection.DeleteOneAsync(filter);
 
         }

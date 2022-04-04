@@ -1,4 +1,7 @@
 @page "/chat/{chatroomId}"
+@inject ProtectedLocalStorage localStorage
+@inject NavigationManager NavManager
+@using Privas.Connectors
 
 <PageTitle>Chat</PageTitle>
 
@@ -24,7 +27,7 @@
             </div>
         </div>
         <div id="chat_section_two">
-            <button id="leave_remove_button">
+            <button id="leave_remove_button" @onclick="LeaveChatroom">
                 Leave chatroom
             </button>
             <div id="members_holder">
@@ -39,4 +42,12 @@
 @code {
     [Parameter]
     public string? ChatroomId { get; set; }
+
+    private async Task LeaveChatroom()
+    {
+        var userCode = await localStorage.GetAsync<string>("privas_currentUserCode");
+        MembershipConnector membershipConnector = new();
+        await membershipConnector.Delete(userCode.Value);
+        NavManager.NavigateTo("/chatrooms");
+    }
 }
