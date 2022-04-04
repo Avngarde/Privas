@@ -4,6 +4,7 @@ section {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 #chat_holder {
@@ -95,8 +96,8 @@ section {
     font-size: 2.5vh;
     border: none;
     color: white;
-    background-color: #D91B1B;
-    border: 1px solid #D91B1B;
+    background-color: black;
+    border: 1px solid black;
     border-radius: 0.25rem;
     padding: 0.25rem 1rem 0.25rem 1rem;
     font-weight: 700;
