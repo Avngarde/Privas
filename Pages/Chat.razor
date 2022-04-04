@@ -1,4 +1,4 @@
-@page "/chat"
+@page "/chat/{chatroomId}"
 
 <PageTitle>Chat</PageTitle>
 
@@ -35,3 +35,8 @@
         </div>
     </div>
 </section>
+
+@code {
+    [Parameter]
+    public string? ChatroomId { get; set; }
+}
