@@ -2,6 +2,8 @@
 @inject ProtectedLocalStorage localStorage
 @inject NavigationManager NavManager
 @using Privas.Connectors
+@using Privas.Data
+@using MongoDB.Bson
 
 <PageTitle>Chat</PageTitle>
 
@@ -27,9 +29,18 @@
             </div>
         </div>
         <div id="chat_section_two">
-            <button id="leave_remove_button" @onclick="LeaveChatroom">
-                Leave chatroom
-            </button>
+            @if(IsOwner)
+            {
+                <button id="leave_remove_button">
+                    Delete Chatroom
+                </button>
+            } 
+            else
+            {
+                <button id="leave_remove_button" @onclick="LeaveChatroom">
+                    Leave chatroom
+                </button>                
+            }
             <div id="members_holder">
                 <span id="members_count">Members: 2</span>
                 <span>Anna</span>
@@ -42,6 +53,32 @@
 @code {
     [Parameter]
     public string? ChatroomId { get; set; }
+
+    public bool IsOwner { get; set; }
+
+    public Chatroom? Chatroom = new()
+    {
+        Name = "",
+        AccessPassword = "",
+        OwnerCode = "",
+        OwnerUsername = "",
+        UniqueCode = ""
+    };
+
+    protected override async Task OnAfterRenderAsync(bool firstRender) 
+    {
+        var chatroomBson = await new ChatroomConnector().Get(ChatroomId);
+        var currentUserCode = await localStorage.GetAsync<string>("privas_currentUserCode");
+        Chatroom = new()
+        {
+            Name = chatroomBson["Name"].ToString(),
+            UniqueCode = chatroomBson["UniqueCode"].ToString(),
+            OwnerUsername = chatroomBson["OwnerUsername"].ToString(),
+            OwnerCode = chatroomBson["OwnerCode"].ToString()
+        };
+        if (Chatroom.OwnerCode == currentUserCode.Value) IsOwner = true;
+        StateHasChanged();
+    }
 
     private async Task LeaveChatroom()
     {
