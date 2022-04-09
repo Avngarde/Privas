@@ -31,7 +31,7 @@
         <div id="chat_section_two">
             @if(IsOwner)
             {
-                <button id="leave_remove_button">
+                <button id="leave_remove_button" @onclick="DeleteChatroom">
                     Delete Chatroom
                 </button>
             } 
@@ -67,17 +67,20 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender) 
     {
-        var chatroomBson = await new ChatroomConnector().Get(ChatroomId);
-        var currentUserCode = await localStorage.GetAsync<string>("privas_currentUserCode");
-        Chatroom = new()
+        if(firstRender)
         {
-            Name = chatroomBson["Name"].ToString(),
-            UniqueCode = chatroomBson["UniqueCode"].ToString(),
-            OwnerUsername = chatroomBson["OwnerUsername"].ToString(),
-            OwnerCode = chatroomBson["OwnerCode"].ToString()
-        };
-        if (Chatroom.OwnerCode == currentUserCode.Value) IsOwner = true;
-        StateHasChanged();
+            var chatroomBson = await new ChatroomConnector().Get(ChatroomId);
+            var currentUserCode = await localStorage.GetAsync<string>("privas_currentUserCode");
+            Chatroom = new()
+            {
+                Name = chatroomBson["Name"].ToString(),
+                UniqueCode = chatroomBson["UniqueCode"].ToString(),
+                OwnerUsername = chatroomBson["OwnerUsername"].ToString(),
+                OwnerCode = chatroomBson["OwnerCode"].ToString()
+            };
+            if (Chatroom.OwnerCode == currentUserCode.Value) IsOwner = true;
+            StateHasChanged();            
+        }
     }
 
     private async Task LeaveChatroom()
@@ -85,6 +88,16 @@
         var userCode = await localStorage.GetAsync<string>("privas_currentUserCode");
         MembershipConnector membershipConnector = new();
         await membershipConnector.Delete(userCode.Value);
+        NavManager.NavigateTo("/chatrooms");
+    }
+
+    private async Task DeleteChatroom()
+    {
+        var userCode = await localStorage.GetAsync<string>("privas_currentUserCode");
+        MembershipConnector membershipConnector = new();
+        ChatroomConnector chatroomConnector = new();
+        await membershipConnector.DeleteAllByChatId(ChatroomId);
+        await chatroomConnector.Delete(ChatroomId);
         NavManager.NavigateTo("/chatrooms");
     }
 }
