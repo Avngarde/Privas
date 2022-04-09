@@ -15,14 +15,14 @@ namespace Privas.Connectors
 
         public async Task<DeleteResult> Delete(string uniqueCode)
         {
-            var filter = Builders<BsonDocument>.Filter.Eq("uniqueCode", uniqueCode);
+            var filter = Builders<BsonDocument>.Filter.Eq("UniqueCode", uniqueCode);
             return await Collection.DeleteOneAsync(filter);
 
         }
 
         public async Task<BsonDocument> Get(string uniqueCode)
         {
-            var filter = Builders<BsonDocument>.Filter.Eq("uniqueCode", uniqueCode);
+            var filter = Builders<BsonDocument>.Filter.Eq("UniqueCode", uniqueCode);
             var searchResult = await Collection.FindAsync(filter);
             return await searchResult.FirstOrDefaultAsync();
         }
@@ -34,7 +34,7 @@ namespace Privas.Connectors
 
         public async Task<ReplaceOneResult> Update(string uniqueCode, BsonDocument chatroom)
         {
-            var filter = Builders<BsonDocument>.Filter.Eq("uniqueCode", uniqueCode);
+            var filter = Builders<BsonDocument>.Filter.Eq("UniqueCode", uniqueCode);
             return await Collection.ReplaceOneAsync(filter, chatroom);
         }
     }
