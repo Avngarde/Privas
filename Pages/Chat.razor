@@ -42,9 +42,11 @@
                 </button>                
             }
             <div id="members_holder">
-                <span id="members_count">Members: 2</span>
-                <span>Anna</span>
-                <span>Michael</span>
+                <span id="members_count">Members: @MemberCount</span>
+                @foreach(Membership member in Members)
+                {
+                    <span>@member.UserName</span>
+                }
             </div>
         </div>
     </div>
@@ -55,6 +57,10 @@
     public string? ChatroomId { get; set; }
 
     public bool IsOwner { get; set; }
+
+    public int MemberCount { get; set; }
+
+    public List<Membership> Members = new();
 
     public Chatroom? Chatroom = new()
     {
@@ -79,6 +85,20 @@
                 OwnerCode = chatroomBson["OwnerCode"].ToString()
             };
             if (Chatroom.OwnerCode == currentUserCode.Value) IsOwner = true;
+
+            List<BsonDocument> membersBson = await new MembershipConnector().GetAll();
+            MemberCount = membersBson.Count;
+
+            foreach(var memberBson in membersBson)
+            {
+                Members.Add(new Membership()
+                    {
+                        UserName = memberBson["UserName"].ToString(),
+                        ChatId = memberBson["ChatId"].ToString(),
+                        UserId = memberBson["UserId"].ToString()
+                    });
+            }
+
             StateHasChanged();            
         }
     }
