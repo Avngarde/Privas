@@ -17,7 +17,12 @@ namespace Privas.Connectors
         {
             var filter = Builders<BsonDocument>.Filter.Eq("UniqueCode", uniqueCode);
             return await Collection.DeleteOneAsync(filter);
+        }
 
+        public async Task<DeleteResult> DeleteByUserCode(string userCode) 
+        {
+            var filter = Builders<BsonDocument>.Filter.Eq("OwnerCode", userCode);
+            return await Collection.DeleteOneAsync(filter);
         }
 
         public async Task<BsonDocument> Get(string uniqueCode)

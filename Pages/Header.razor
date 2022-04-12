@@ -1,9 +1,11 @@
 @inject ProtectedLocalStorage localStorage;
+@inject NavigationManager NavManager;
+@using Privas.Connectors
 
 <header>
     <span>Username: @userName</span>
     <span>User code: @userCode</span>
-    <button>End session</button>
+    <button @onclick="EndSession">End session</button>
 </header>
 
 @code {
@@ -17,5 +19,17 @@
         userName = currentUserName.Value;
         userCode = currentUserCode.Value;
         StateHasChanged();
+    }
+
+    private async Task EndSession()
+    {
+        MembershipConnector membershipConnector = new();
+        ChatroomConnector chatroomConnector = new();
+        var currentUserCode = await localStorage.GetAsync<string>("privas_currentUserCode");
+        await localStorage.DeleteAsync("privas_currentUserName");
+        await localStorage.DeleteAsync("privas_currentUserCode");
+        await membershipConnector.Delete(currentUserCode.Value);
+        await chatroomConnector.DeleteByUserCode(currentUserCode.Value);
+        NavManager.NavigateTo("/");
     }
 }
