@@ -126,3 +126,20 @@ section {
 #members_count {
     border-bottom: 0.5px solid #A0A0A0;
 }
+
+.member_delete {
+    font-size: 2.3vh;
+    border: none;
+    color: red;
+    background-color: white;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    outline: none;
+    transition: 0.2s;
+}
+
+.member_delete:hover {
+    color: burlywood;
+    transition: 0.2s;
+    cursor: pointer;
+}

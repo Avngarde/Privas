@@ -45,7 +45,17 @@
                 <span id="members_count">Members: @MemberCount</span>
                 @foreach(Membership member in Members)
                 {
-                    <span>@member.UserName</span>
+                    @if(IsOwner)
+                    {
+                        <span>
+                            @member.UserName
+                            <button class="member_delete" @onclick="(() => DeleteMember(member.UserId))">X</button>
+                        </span>
+                    }
+                    else 
+                    {
+                        <span>@member.UserName</span>
+                    }
                 }
             </div>
         </div>
@@ -119,5 +129,14 @@
         await membershipConnector.DeleteAllByChatId(ChatroomId);
         await chatroomConnector.Delete(ChatroomId);
         NavManager.NavigateTo("/chatrooms");
+    }
+
+    private async Task DeleteMember(string userId)
+    {
+        await new MembershipConnector().Delete(userId);
+        var toDelete = Members.Where(member => member.UserId == userId).FirstOrDefault();
+        Members.Remove(toDelete);
+        MemberCount--;
+        StateHasChanged();
     }
 }
