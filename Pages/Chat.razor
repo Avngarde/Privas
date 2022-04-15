@@ -85,7 +85,8 @@
     {
         if(firstRender)
         {
-            var chatroomBson = await new ChatroomConnector().Get(ChatroomId);
+            ChatroomConnector chatroomConnector = new();
+            var chatroomBson = await chatroomConnector.Get(ChatroomId);
             var currentUserCode = await localStorage.GetAsync<string>("privas_currentUserCode");
             Chatroom = new()
             {
@@ -108,8 +109,32 @@
                         UserId = memberBson["UserId"].ToString()
                     });
             }
+            StateHasChanged();
 
-            StateHasChanged();            
+            // Check if user is still a member of chatroom every 2 seconds
+            MembershipConnector membershipConnector = new();
+            List<BsonDocument> members;
+            BsonDocument member;
+            while(true)
+            {
+                members = await membershipConnector.GetAll();
+                member = members.Where(member => member["UserId"] == currentUserCode.Value).FirstOrDefault();
+                if (member != null)
+                {
+                    await Task.Delay(3000);
+                    StateHasChanged();                     
+                }
+                else
+                {
+                    if (IsOwner)
+                    {
+                        await chatroomConnector.Delete(ChatroomId);
+                        await membershipConnector.DeleteAllByChatId(ChatroomId);
+                    }
+                    NavManager.NavigateTo("/chatrooms");
+                    break;
+                }
+            } 
         }
     }
 
