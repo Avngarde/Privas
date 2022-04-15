@@ -3,6 +3,7 @@
 @using Privas.Connectors
 @using Privas.Data
 @using MongoDB.Bson;
+@inject IToastService toastService;
 @inject NavigationManager NavManager
 
 <PageTitle>Chatrooms</PageTitle>
@@ -51,14 +52,21 @@
         var userName = await localStorage.GetAsync<string>("privas_currentUserName");
         var userCode = await localStorage.GetAsync<string>("privas_currentUserCode");
         MembershipConnector membershipConnector = new();
-        Membership membership = new() 
+        if (await membershipConnector.Get(userCode.Value) != null)
         {
-            ChatId = uniqueCode,
-            UserId = userCode.Value,
-            UserName = userName.Value
-        };
-        await membershipConnector.Add(membership.ToBsonDocument());
-        NavManager.NavigateTo("/chat/"+uniqueCode);
+            toastService.ShowError("", "You already belong to a chatroom");
+        }
+        else 
+        {
+            Membership membership = new() 
+            {
+                ChatId = uniqueCode,
+                UserId = userCode.Value,
+                UserName = userName.Value
+            };
+            await membershipConnector.Add(membership.ToBsonDocument());
+            NavManager.NavigateTo("/chat/"+uniqueCode);
+        }
     }
 
     protected async override Task OnInitializedAsync()

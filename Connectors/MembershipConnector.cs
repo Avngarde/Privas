@@ -28,7 +28,7 @@ namespace Privas.Connectors
 
         public async Task<BsonDocument> Get(string userId)
         {
-            var filter = Builders<BsonDocument>.Filter.Eq("userId", userId);
+            var filter = Builders<BsonDocument>.Filter.Eq("UserId", userId);
             var searchResult = await Collection.FindAsync(filter);
             return await searchResult.FirstOrDefaultAsync();
         }
