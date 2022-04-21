@@ -9,15 +9,39 @@
 <PageTitle>Chatrooms</PageTitle>
 
 <Header />
+@if (showPasswordForm)
+{
+    <div id="password_form_background">
+        <div id="password_form_holder">
+            <span>
+                <button id="password_close_button" @onclick="(() => showPasswordForm = false)">X</button>
+            </span>
+            <span>
+                <input type="password" placeholder="Password" 
+                    @onkeydown="VerifyPasswordEnter"
+                    @oninput = "((ChangeEventArgs e) => password = e?.Value?.ToString())" 
+                />
+                <button id="password_join_button" 
+                @onclick="VerifyPassword">
+                    Join
+                </button>
+            </span>
+        </div>
+    </div>    
+}
 <div id="chatrooms_container">
     <div id="chatrooms_list">
         @foreach (var chatroom in chatrooms) 
         {
-            var uniqueCode = chatroom["UniqueCode"];
+            var accessPassword = chatroom["AccessPassword"].ToString();
+            var uniqueCode = chatroom["UniqueCode"].ToString();
             <div class="chatroom">
                 <div class="chatroom_name"><b>@chatroom["Name"]</b></div>
                 <div class="chatroom_owner_username">Owner: @chatroom["OwnerUsername"]</div>
-                <button class="chatroom_join_button" @onclick="(async () => await JoinChatroom(uniqueCode?.ToString()))">Join</button>
+                <button class="chatroom_join_button" 
+                    @onclick="(() => SetPasswordFormData(accessPassword, uniqueCode))">
+                        Join
+                </button>
             </div>
         }
     </div>
@@ -31,6 +55,10 @@
     private ChatroomConnector chatroomConnector = new();
     private List<MongoDB.Bson.BsonDocument> chatrooms = new();
     private List<MongoDB.Bson.BsonDocument> chatroomsAll = new();
+    private bool showPasswordForm;
+    private string? currentFormCorrectPassword;
+    private string? currentFormUniqueCode;
+    private string? password;
     private string? search;
 
     private void SearchChatroom(ChangeEventArgs e)
@@ -67,6 +95,33 @@
             await membershipConnector.Add(membership.ToBsonDocument());
             NavManager.NavigateTo("/chat/"+uniqueCode);
         }
+    }
+
+    private void SetPasswordFormData(string accessPassword, string chatroomId)
+    {
+        currentFormCorrectPassword = accessPassword;
+        currentFormUniqueCode = chatroomId;
+        showPasswordForm = true;
+    }
+
+    private async Task VerifyPassword()
+    {
+        if (password == currentFormCorrectPassword)
+        {
+            await JoinChatroom(currentFormUniqueCode); 
+        }
+        else
+        {
+            toastService.ShowError("Invalid password");
+        }
+    }
+
+    private async Task VerifyPasswordEnter(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter")
+        {
+            await VerifyPassword();          
+        }        
     }
 
     protected async override Task OnInitializedAsync()
