@@ -91,6 +91,7 @@ input[type="text"]::placeholder {
     border: 1px solid #f15025;
     font-weight: bold;
     border-radius: 0.5rem;
+    box-shadow: 0 4px 14px 0 rgb(241 80 37 / 39%);
     padding: 0.2% 1% 0.2% 1%;
     transition: all 0.3s cubic-bezier(0.1, 0.9, 0.2, 1);
     outline: none;
