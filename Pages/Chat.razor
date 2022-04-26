@@ -119,13 +119,18 @@
             }
             StateHasChanged();
 
-
             // Check if user is still a member of chatroom every 3 seconds
             while(true)
             {
-                await UpdateMembershipStatus();
+                bool doContinue = await UpdateMembershipStatus();
+                if (!doContinue)
+                {
+                    break;
+                }
                 await Task.Delay(200);
             } 
+
+            NavManager.NavigateTo("/chatrooms"); // This code will be executed if the while above is breaked
         }
     }
 
@@ -156,7 +161,7 @@
         StateHasChanged();
     }
 
-    private async Task UpdateMembershipStatus()
+    private async Task<bool> UpdateMembershipStatus()
     {
         ChatroomConnector chatroomConnector = new();
         MembershipConnector membershipConnector = new();
@@ -175,11 +180,9 @@
         members = await membershipConnector.GetAll();
         member = members.Where(member => member["UserId"] == currentUserCode.Value).FirstOrDefault();
 
-        Console.Write(members);
-
         if (member != null)
         {
-            StateHasChanged();                     
+            StateHasChanged();  
         }
         else
         {
@@ -188,7 +191,10 @@
                 await chatroomConnector.Delete(ChatroomId);
                 await membershipConnector.DeleteAllByChatId(ChatroomId);
             }
-            NavManager.NavigateTo("/chatrooms");
-        }        
+
+            return false;
+        }
+
+        return true;
     }
 }
