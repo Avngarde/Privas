@@ -25,7 +25,10 @@
                         <span>Mind if i join the conversation?</span>
                     </div>
                 </div>
-                <input type="text" placeholder="Message..." id="message_input" />
+                <input type="text" placeholder="Message..." id="message_input"
+                    @bind = "message"
+                    @oninput = "((ChangeEventArgs e) => message = e?.Value?.ToString())" 
+                    @onkeypress = "SendMessage" />
             </div>
         </div>
         <div id="chat_section_two">
@@ -71,6 +74,8 @@
     public int MemberCount { get; set; }
 
     public List<Membership> Members = new();
+
+    public string? message { get; set; }
 
     public Chatroom? Chatroom = new()
     {
@@ -196,5 +201,23 @@
         }
 
         return true;
+    }
+
+    private async Task SendMessage(KeyboardEventArgs e)
+    {
+        if (e.Code != "Enter") return;
+
+        var userName = await localStorage.GetAsync<string>("privas_currentUserName");
+        var userCode = await localStorage.GetAsync<string>("privas_currentUserCode");
+        MessageConnector messageConnector = new();
+        Message newMessage = new() 
+        {
+            ChatId = ChatroomId,
+            UserName = userName.Value,
+            UserId = userCode.Value,
+            Text = message
+        };
+        await messageConnector.Add(newMessage.ToBsonDocument());
+        message = "";
     }
 }
