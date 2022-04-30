@@ -13,17 +13,22 @@
         <div id="chat_section_one">
             <div id="messages_holder">
                 <div id="messages">
-                    <div class="message">
-                        <div>Michael: </div>
-                        <span>Hi</span>
-                    </div>
-                    <div class="message">
-                        <div>Anna: </div>
-                        <span>Test Message abcdefghijklmnTest Message abcdefghijklmnTest Message abcdefghijklmnTest Message abcdefghijklmnTest Message abcdefghijklmnTest Message abcdefghijklmnTest Message abcdefghijklmn</span>
-                    </div>
-                    <div class="user_message message">
-                        <span>Mind if i join the conversation?</span>
-                    </div>
+                @foreach(Message message in Messages)
+                {
+                    @if (message.IsUserMessage)
+                    {
+                        <div class="user_message message">
+                            <span>@message.Text</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="message">
+                            <div>@message.UserName: </div>
+                            <span>@message.Text</span>
+                        </div>                            
+                    }
+                }
                 </div>
                 <input type="text" placeholder="Message..." id="message_input"
                     @bind = "message"
@@ -75,6 +80,8 @@
 
     public List<Membership> Members = new();
 
+    public List<Message> Messages = new();
+
     public string? message { get; set; }
 
     public Chatroom? Chatroom = new()
@@ -122,12 +129,14 @@
                         UserId = memberBson["UserId"].ToString()
                     });
             }
+            Messages = await GetMessages();
             StateHasChanged();
 
             // Check if user is still a member of chatroom every 3 seconds
             while(true)
             {
                 bool doContinue = await UpdateMembershipStatus();
+                Messages = await GetMessages();
                 if (!doContinue)
                 {
                     break;
@@ -219,5 +228,28 @@
         };
         await messageConnector.Add(newMessage.ToBsonDocument());
         message = "";
+    }
+
+    private async Task<List<Message>> GetMessages()
+    {
+        var userCode = await localStorage.GetAsync<string>("privas_currentUserCode");
+        MessageConnector messageConnector = new();
+        List<BsonDocument> allMessages = await messageConnector.GetAll();
+        var chatMessages = allMessages.Where(message => message["ChatId"] == ChatroomId).ToList();
+        List<Message> messages = new();
+        foreach(var message in chatMessages)
+        {
+            messages.Add(
+                new Message()
+                    {
+                        ChatId = ChatroomId,
+                        UserId = message["UserId"].ToString(),
+                        UserName = message["UserName"].ToString(),
+                        Text = message["Text"].ToString(),
+                        IsUserMessage = userCode.Value == message["UserId"].ToString() ? true : false
+                    }
+            );
+        }
+        return messages;
     }
 }
