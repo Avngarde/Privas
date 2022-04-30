@@ -2,6 +2,7 @@
 @inject ProtectedLocalStorage localStorage
 @inject NavigationManager NavManager
 @using Privas.SupportClasses
+@using Privas.Connectors
 @inject IToastService toastService
 
 <PageTitle>Index</PageTitle>
@@ -35,6 +36,16 @@
     {
         if (username != null) 
         {
+            var userCode = await localStorage.GetAsync<string>("privas_currentUserCode");
+            if (userCode.Value != null)
+            {
+                MembershipConnector membershipConnector = new();
+                ChatroomConnector chatroomConnector = new();
+                await localStorage.DeleteAsync("privas_currentUserName");
+                await localStorage.DeleteAsync("privas_currentUserCode");
+                await membershipConnector.Delete(userCode.Value);
+                await chatroomConnector.DeleteByUserCode(userCode.Value);
+            }
             await localStorage.SetAsync("privas_currentUserName", username);
             await localStorage.SetAsync("privas_currentUserCode", UserCodeGenerator.Generate());
             toastService.ShowSuccess("", "Username set");
