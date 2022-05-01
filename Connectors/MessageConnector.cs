@@ -19,6 +19,18 @@ namespace Privas.Connectors
             return await Collection.DeleteOneAsync(filter);
         }
 
+        public async Task<DeleteResult> DeleteAllByChatId(string chatId)
+        {
+            var filter = Builders<BsonDocument>.Filter.Eq("ChatId", chatId);
+            return await Collection.DeleteManyAsync(filter);
+        }
+
+        public async Task<DeleteResult> DeleteAllByOwnerId(string userCode)
+        {
+            var filter = Builders<BsonDocument>.Filter.Eq("UserId", userCode);
+            return await Collection.DeleteOneAsync(filter);
+        }
+
         public async Task<BsonDocument> Get(string messageId)
         {
             var filter = Builders<BsonDocument>.Filter.Eq("MessageId", messageId);
