@@ -45,6 +45,13 @@ namespace Privas.Connectors
             return await searchResult.ToListAsync();   
         }
 
+        public async Task<List<BsonDocument>> GetAllByChatId(string chatId)
+        {
+            var filter = Builders<BsonDocument>.Filter.Eq("ChatId", chatId);
+            var searchResult = await Collection.FindAsync(filter);
+            return await searchResult.ToListAsync();
+        }
+
         public async Task<ReplaceOneResult> Update(string userId, BsonDocument chatroom)
         {
             var filter = Builders<BsonDocument>.Filter.Eq("userId", userId);
