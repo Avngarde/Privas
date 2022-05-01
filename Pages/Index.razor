@@ -15,8 +15,7 @@
     <div id="second_half">
        <div id="second_half_content">
            <div id="username_form">
-               <input type="text" placeholder="Username" value="@username"
-                    @oninput = "((ChangeEventArgs e) => username = e?.Value?.ToString())"  />
+               <input type="text" placeholder="Username" @bind="username" />
                <button @onclick="SetUsername">Set username</button>
            </div>
            <span>And then</span>
