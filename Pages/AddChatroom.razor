@@ -12,11 +12,11 @@
 <div id="add_chatroom_container">
     <div id="form_holder">
         <h1>Add Chatroom</h1>
-        <input type="text" value="@name" placeholder="Chatroom name" 
-            @oninput = "((ChangeEventArgs e) => name = e?.Value?.ToString())" 
+        <input type="text" placeholder="Chatroom name" 
+            @bind="name" 
         />
-        <input type="text" value="@password" placeholder="Access password" 
-            @oninput = "((ChangeEventArgs e) => password = e?.Value?.ToString())" 
+        <input type="text" placeholder="Access password" 
+            @bind="password"
         />
         <button id="add_chatroom_submit" @onclick="CreateChatroom">Add!</button>
     </div>

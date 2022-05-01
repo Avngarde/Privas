@@ -32,7 +32,6 @@
                 </div>
                 <input type="text" placeholder="Message..." id="message_input"
                     @bind = "message"
-                    @oninput = "((ChangeEventArgs e) => message = e?.Value?.ToString())" 
                     @onkeypress = "SendMessage" />
             </div>
         </div>
