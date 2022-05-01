@@ -117,18 +117,9 @@
             if (Chatroom.OwnerCode == currentUserCode.Value) IsOwner = true;
 
             // Get chatroom members
-            List<BsonDocument> membersBson = await new MembershipConnector().GetAll();
-            MemberCount = membersBson.Count;
+            Members = await UpdateMembers();
+            MemberCount = Members.Count;
 
-            foreach(var memberBson in membersBson)
-            {
-                Members.Add(new Membership()
-                    {
-                        UserName = memberBson["UserName"].ToString(),
-                        ChatId = memberBson["ChatId"].ToString(),
-                        UserId = memberBson["UserId"].ToString()
-                    });
-            }
             Messages = await GetMessages();
             StateHasChanged();
 
@@ -137,6 +128,8 @@
             {
                 bool doContinue = await UpdateMembershipStatus();
                 Messages = await GetMessages();
+                Members = await UpdateMembers();
+                MemberCount = Members.Count;
                 if (!doContinue)
                 {
                     break;
@@ -251,5 +244,23 @@
             );
         }
         return messages;
+    }
+
+    private async Task<List<Membership>> UpdateMembers()
+    {
+        MembershipConnector membershipConnector = new();
+        var membersBson = await membershipConnector.GetAllByChatId(ChatroomId);
+        List<Membership> members = new();
+        foreach(var memberBson in membersBson)
+        {
+            members.Add(new Membership()
+            {
+                UserName = memberBson["UserName"].ToString(),
+                ChatId = memberBson["ChatId"].ToString(),
+                UserId = memberBson["UserId"].ToString()
+            });
+        }
+
+        return members;
     }
 }
