@@ -39,6 +39,7 @@
             var userCode = await localStorage.GetAsync<string>("privas_currentUserCode");
             if (userCode.Value != null)
             {
+                toastService.ShowInfo("Deleting old messages, and owned chatrooms to create new user session...", "User session already exists");
                 MembershipConnector membershipConnector = new();
                 ChatroomConnector chatroomConnector = new();
                 await localStorage.DeleteAsync("privas_currentUserName");
