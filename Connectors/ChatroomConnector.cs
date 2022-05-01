@@ -15,12 +15,16 @@ namespace Privas.Connectors
 
         public async Task<DeleteResult> Delete(string uniqueCode)
         {
+            MessageConnector messageConnector = new();
+            await messageConnector.DeleteAllByChatId(uniqueCode);
             var filter = Builders<BsonDocument>.Filter.Eq("UniqueCode", uniqueCode);
             return await Collection.DeleteOneAsync(filter);
         }
 
         public async Task<DeleteResult> DeleteByUserCode(string userCode) 
         {
+            MessageConnector messageConnector = new();
+            await messageConnector.DeleteAllByOwnerId(userCode);
             var filter = Builders<BsonDocument>.Filter.Eq("OwnerCode", userCode);
             return await Collection.DeleteOneAsync(filter);
         }
