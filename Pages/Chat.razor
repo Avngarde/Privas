@@ -1,6 +1,7 @@
 @page "/chat/{chatroomId}"
 @inject ProtectedLocalStorage localStorage
 @inject NavigationManager NavManager
+@inject IJSRuntime JS
 @using Privas.Connectors
 @using Privas.Data
 @using MongoDB.Bson
@@ -127,6 +128,7 @@
             {
                 bool doContinue = await UpdateMembershipStatus();
                 Messages = await GetMessages();
+                await JS.InvokeAsync<Task>("autoScrollDown", null);
                 Members = await UpdateMembers();
                 MemberCount = Members.Count;
                 if (!doContinue)
