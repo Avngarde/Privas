@@ -4,6 +4,7 @@
 @using Privas.SupportClasses;
 @using Privas.Connectors;
 @inject IToastService toastService;
+@inject NavigationManager NavManager;
 @inject ProtectedLocalStorage localStorage;
 
 <PageTitle>AddChatroom</PageTitle>
@@ -35,11 +36,13 @@
             {
                 var userName = await localStorage.GetAsync<string>("privas_currentUserName");
                 var userCode = await localStorage.GetAsync<string>("privas_currentUserCode");
+                string uniqueCode = UniqueCodeGenerator.Generate();
+                MembershipConnector membershipConnector = new();
                 Chatroom newChatroom = new()
                 {
                     Name = name,
                     AccessPassword = password,
-                    UniqueCode = UniqueCodeGenerator.Generate(),
+                    UniqueCode = uniqueCode,
                     OwnerUsername = userName.Value,
                     OwnerCode = userCode.Value
                 };
@@ -48,6 +51,14 @@
                 await connector.Add(newChatroom.ToBsonDocument());
                 toastService.ClearInfoToasts();
                 toastService.ShowSuccess("", "Created Chatroom");
+                Membership membership = new() 
+                {
+                    ChatId = uniqueCode,
+                    UserId = userCode.Value,
+                    UserName = userName.Value
+                };
+                await membershipConnector.Add(membership.ToBsonDocument());
+                NavManager.NavigateTo("/chat/"+uniqueCode);
             }
             catch (Exception)
             {
