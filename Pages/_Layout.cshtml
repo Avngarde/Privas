@@ -22,4 +22,10 @@
 </body>
 
 <script src="_framework/blazor.server.js"></script>
+<script>
+    function autoScrollDown() {
+        var messages = document.getElementById("messages");
+        messages.scrollTop = messages.scrollHeight;
+    }
+</script>
 </html>
