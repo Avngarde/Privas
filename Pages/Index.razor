@@ -9,22 +9,27 @@
 
 <div id="index_container">
     <div id="first_half">
-        <span id="app_name">PRIVAS</span>
-        <span id="app_description">Website for private, quick chats</span>
+        <div id="app_header">Privas - Feel the absolute privacy!</div>
+        <div id="app_description">Create secured chatrooms where you can chat being absolutley private and safe</div>
     </div>
     <div id="second_half">
-       <div id="second_half_content">
-           <div id="username_form">
-               <input type="text" placeholder="Username" @bind="username" />
-               <button @onclick="SetUsername">Set username</button>
-           </div>
-           <span>And then</span>
-           <div id="index_options_holder">
-               <a href="" @onclick="GoToChatrooms">Browse roomchats</a>
-               <span>Or</span>
-               <a href="" @onclick="GoToAddChatroom">Create a roomchat</a>
-           </div>
-       </div> 
+        <div id="features">
+            <div class="feature">
+                <div class="feature_header">No account</div>
+                <div class="feature_description">Explore all of Privas features without any of your personal data being stored and used.</div>
+            </div>
+            <div class="feature">
+                <div class="feature_header">Deleted messages</div>
+                <div class="feature_description">Done with talking? Privas allow you to completly delete all the messages from our database.</div>
+            </div>
+            <div class="feature">
+                <div class="feature_header">Password secured</div>
+                <div class="feature_description">All the chatrooms are protected with password, no one unauthorized will be able to read your messages!</div>
+            </div>
+        </div>
+    </div>
+    <div id="username_form">
+        <input type="text" placeholder="Username" @bind="username" /><button @onclick="SetUsername">Set username</button>
     </div>
 </div>
 
