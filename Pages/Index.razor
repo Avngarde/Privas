@@ -15,14 +15,17 @@
     <div id="second_half">
         <div id="features">
             <div class="feature">
+                <div class="feature_icon">🔒</div>
                 <div class="feature_header">No account</div>
                 <div class="feature_description">Explore all of Privas features without any of your personal data being stored and used.</div>
             </div>
             <div class="feature">
+                <div class="feature_icon">❌</div>
                 <div class="feature_header">Deleted messages</div>
-                <div class="feature_description">Done with talking? Privas allow you to completly delete all the messages from our database.</div>
+                <div class="feature_description">Privas allow you to completly delete all the messages from our database when you are done talking</div>
             </div>
             <div class="feature">
+                <div class="feature_icon">🔑</div>
                 <div class="feature_header">Password secured</div>
                 <div class="feature_description">All the chatrooms are protected with password, no one unauthorized will be able to read your messages!</div>
             </div>
@@ -54,6 +57,7 @@
             await localStorage.SetAsync("privas_currentUserName", username);
             await localStorage.SetAsync("privas_currentUserCode", UserCodeGenerator.Generate());
             toastService.ShowSuccess("", "Username set");
+            await GoToChatrooms();
         }
     }
 
@@ -65,15 +69,5 @@
         {
             NavManager.NavigateTo("/chatrooms");
         }
-    }
-
-    private async Task GoToAddChatroom()
-    {
-        var username = await localStorage.GetAsync<string>("privas_currentUserName");
-        var userCode = await localStorage.GetAsync<string>("privas_currentUserCode");
-        if (username.Value != null && userCode.Value != null) 
-        {
-            NavManager.NavigateTo("/addchatroom");
-        }   
     }
 }
