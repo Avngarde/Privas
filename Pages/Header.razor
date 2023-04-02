@@ -26,10 +26,10 @@
         MembershipConnector membershipConnector = new();
         ChatroomConnector chatroomConnector = new();
         var currentUserCode = await localStorage.GetAsync<string>("privas_currentUserCode");
+        await chatroomConnector.DeleteByUserCode(currentUserCode.Value);
+        await membershipConnector.Delete(currentUserCode.Value);
         await localStorage.DeleteAsync("privas_currentUserName");
         await localStorage.DeleteAsync("privas_currentUserCode");
-        await membershipConnector.Delete(currentUserCode.Value);
-        await chatroomConnector.DeleteByUserCode(currentUserCode.Value);
         NavManager.NavigateTo("/");
     }
 }

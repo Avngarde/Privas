@@ -12,9 +12,9 @@ a {
 
 header {
     width: 96%;
-    height: 6vh;
+    height: 4vh;
     color: black;
-    font-size: 2.3vh;
+    font-size: 1.8vh;
     display: flex;
     justify-content: space-between;
     padding-left: 2%;
@@ -29,10 +29,13 @@ header {
 header button {
     font-size: 2vh;
     border: none;
-    color: white;
-    background-color: #f15025;
-    border: 1px solid #f15025;
+    color: #f15025;
+    background-color: white;
     border-radius: 0.25rem;
     padding: 0.25rem 1rem 0.25rem 1rem;
     font-weight: 700;
+}
+
+header button:hover {
+    cursor: pointer;
 }
