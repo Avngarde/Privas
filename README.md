@@ -1,5 +1,7 @@
 # Privas
-Privas is a web application for doing private and secure chats. The main feature of the application is that after the chatroom owner deletes the chatroom, all the messages and informations are deleted. There are also no user accounts, so any sort of information can't be connected to a certain person.
+A Blazor web application for creating secure chatrooms.
+
+Privas requires no user account, and doesn't track any user data. After the admin closes the chatroom, all the related data are deleted.
 
 ![](https://img.shields.io/github/languages/code-size/Avngarde/Privas?style=for-the-badge) 
 
